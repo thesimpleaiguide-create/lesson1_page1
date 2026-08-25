@@ -3,115 +3,151 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lesson Introduction - Mindsmith Embed</title>
+  <title>Lesson Embed - Mindsmith Audio</title>
+  
+  <!-- Load Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Load Montserrat Font directly from Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
   
   <style>
+    /* Reset & Base HTML Rules */
     html, body {
       margin: 0;
       padding: 0;
       width: 100%;
       height: 100%;
-      /* Prevents scrollbars in Mindsmith embeds */
-      overflow: hidden; 
-      background-color: #ffffff;
+      background-color: transparent;
       font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      color: #54595e;
+      color: #4b5158; /* Mindsmith body text color */
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow: hidden; /* Prevents unwanted iframe scrollbars */
     }
 
-    /* Container layout with dynamic auto-fit padding */
-    .embed-container {
+    /* Main Container - Zero extra padding to avoid double padding inside Mindsmith */
+    .embed-card {
       width: 100%;
-      height: 100%;
       box-sizing: border-box;
-      padding: 24px 32px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      overflow-y: auto; /* Fallback overflow handled smoothly */
-      /* Hide scrollbar for Chrome, Safari and Opera */
-      -ms-overflow-style: none;  /* IE and Edge */
-      scrollbar-width: none;  /* Firefox */
-    }
-    .embed-container::-webkit-scrollbar {
-      display: none;
+      padding: 2px 0;
+      margin: 0 auto;
     }
 
-    .text-block {
-      transition: all 0.3s ease;
+    /* Text Styling matching Mindsmith native typography */
+    .mindsmith-text {
+      font-size: 18.5px;
+      line-height: 1.75;
+      letter-spacing: -0.011em;
+      color: #4b5158;
+      font-weight: 400;
+    }
+
+    /* Dark bold text matching Mindsmith */
+    .mindsmith-text strong, 
+    .mindsmith-text b {
+      color: #1f2328;
+      font-weight: 600;
+    }
+
+    /* Active track audio visual indicator */
+    .text-track {
+      transition: background-color 0.3s ease, border-color 0.3s ease;
       border-left: 3px solid transparent;
-      padding-left: 12px;
-      margin-left: -15px;
+      padding-left: 8px;
+      margin-left: -11px;
       border-radius: 4px;
     }
 
-    .text-block.active-track {
+    .text-track.playing-active {
       border-left-color: #0284c7;
+      background-color: rgba(2, 132, 199, 0.05);
+    }
+
+    /* Custom inline speaker button */
+    .speaker-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
       background-color: #f0f9ff;
+      border: 1px solid #bae6fd;
+      color: #0284c7;
+      vertical-align: -5px;
+      margin-right: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
     }
 
-    /* Speaker Button Pulse Effect */
-    @keyframes pulse-ring {
-      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.4); }
-      70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(2, 132, 199, 0); }
-      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(2, 132, 199, 0); }
+    .speaker-btn:hover {
+      background-color: #e0f2fe;
+      border-color: #7dd3fc;
+      transform: scale(1.05);
     }
 
-    .playing-pulse {
+    .speaker-btn.is-playing {
+      background-color: #0284c7;
+      border-color: #0284c7;
+      color: #ffffff;
       animation: pulse-ring 2s infinite;
-      background-color: #0284c7 !important;
-      color: #ffffff !important;
+    }
+
+    @keyframes pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.4); }
+      70% { box-shadow: 0 0 0 8px rgba(2, 132, 199, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0); }
     }
   </style>
 </head>
-<body class="bg-white text-[#4a5568]">
+<body class="bg-white">
 
-  <div class="embed-container max-w-4xl mx-auto flex flex-col justify-between">
-    
-    <div class="space-y-4 text-[15px] sm:text-[16px] leading-[1.7] text-[#4a5056] font-normal">
+  <div class="embed-card mindsmith-text">
+    <div class="space-y-6">
       
-      <!-- Paragraph 1 (Track 1) -->
-      <p id="track-p-0" class="text-block">
+      <!-- Paragraph 1 (Track 1) with inline Speaker Icon -->
+      <p id="track-p-0" class="text-track">
         <button 
           id="audio-toggle-btn" 
           onclick="toggleAudioPlayback()"
-          class="inline-flex items-center justify-center p-2 mr-2 -translate-y-[1px] align-middle rounded-full bg-sky-50 hover:bg-sky-100 text-sky-700 transition-all shadow-sm focus:outline-none border border-sky-200"
-          title="Click to Listen / Stop Audio"
+          class="speaker-btn"
+          title="Play / Stop Lesson Audio"
+          aria-label="Toggle Audio Playback"
         >
-          <!-- Speaker Icon (Default Stopped) -->
-          <svg id="speaker-icon" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <!-- Speaker Play Icon -->
+          <svg id="speaker-icon" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
           </svg>
 
-          <!-- Stop Icon (Hidden when playing) -->
-          <svg id="stop-icon" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <rect x="6" y="6" width="12" height="12" rx="1" stroke-linecap="round" stroke-linejoin="round" />
+          <!-- Stop Icon (shown while audio plays) -->
+          <svg id="stop-icon" class="w-4 h-4 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <rect x="6" y="6" width="12" height="12" rx="1.5" />
           </svg>
         </button>Conflict with patients is one of the most draining parts of working in healthcare and one of the least talked about. This lesson will give you practical tools to handle those moments with confidence, without you paying an emotional cost.
       </p>
 
       <!-- Paragraph 2 (Track 2) -->
-      <p id="track-p-1" class="text-block">
-        We will start with the <strong class="font-semibold text-gray-900">why</strong> behind difficult behaviour because understanding what is driving it changes everything. Then we will move to the <strong class="font-semibold text-gray-900">how</strong>, that is, what you can <strong class="font-semibold text-gray-900">actually do</strong> in the moment.
+      <p id="track-p-1" class="text-track">
+        We will start with the <strong>why</strong> behind difficult behaviour because understanding what is driving it changes everything. Then we will move to the <strong>how</strong>, that is, what you can <strong>actually do</strong> in the moment.
       </p>
 
-      <!-- Paragraph 3 & List (Track 3) -->
-      <div id="track-p-2" class="text-block space-y-3">
+      <!-- Paragraph 3 & Bullet List (Track 3) -->
+      <div id="track-p-2" class="text-track space-y-3">
         <p>By the end of this lesson, you will be able to:</p>
 
-        <ul class="list-disc pl-6 space-y-2 marker:text-gray-700">
-          <li>
-            Recognise the <strong class="font-semibold text-gray-900">hidden drivers</strong> behind challenging behaviour so that you can respond rather than react
+        <ul class="list-disc pl-7 space-y-3.5 marker:text-[#33373d]">
+          <li class="pl-1">
+            Recognise the <strong>hidden drivers</strong> behind challenging behaviour so that you can respond rather than react
           </li>
-          <li>
-            Use empathy-first communication to <strong class="font-semibold text-gray-900">de-escalate</strong> tense situations without losing your authority
+          <li class="pl-1">
+            Use empathy-first communication to <strong>de-escalate</strong> tense situations without losing your authority
           </li>
-          <li>
-            Apply the <strong class="font-semibold text-gray-900"><em>'what is in my control'</em> model</strong> to focus your energy on what you <strong class="font-semibold text-gray-900">can</strong> influence which will reduce stress and achieve better outcomes for you and the patient.
+          <li class="pl-1">
+            Apply the <strong>'what is in my control' model</strong> to focus your energy on what you <strong>can</strong> influence which will reduce stress and achieve better outcomes for you and the patient.
           </li>
         </ul>
       </div>
@@ -122,7 +158,7 @@
   <script>
     /**
      * AUDIO CONFIGURATION (.wav files)
-     * Updated to match exact filenames uploaded to GitHub repository root
+     * Matches exact filenames in your GitHub repo root
      */
     const AUDIO_FILES = [
       'audio1.wav',
@@ -130,7 +166,7 @@
       'audio3.wav'
     ];
 
-    // Pause between tracks in milliseconds (1200 = 1.2 seconds)
+    // Slight pause between tracks in milliseconds (1200 = 1.2 seconds)
     const PAUSE_BETWEEN_TRACKS = 1200; 
 
     let currentAudio = null;
@@ -151,11 +187,11 @@
     }
 
     function startAudioPlayback(index) {
-      // Clear existing tracks and timeouts
+      // Clear previous track instance
       stopAudioPlayback(false);
 
       if (index >= AUDIO_FILES.length) {
-        // All tracks completed
+        // Playback completed for all tracks
         resetUI();
         return;
       }
@@ -165,13 +201,13 @@
       updateUIPlayingState();
       highlightActiveText(index);
 
-      // Create and configure HTML5 Audio object
+      // Initialize HTML5 Audio with wav path
       currentAudio = new Audio(AUDIO_FILES[index]);
 
-      // When track finishes playing
+      // Triggered when current WAV track completes
       currentAudio.onended = () => {
         clearHighlights();
-        // Slight pause before next track
+        // Pause briefly before playing next track
         pauseTimeout = setTimeout(() => {
           if (isPlaying) {
             startAudioPlayback(index + 1);
@@ -179,10 +215,9 @@
         }, PAUSE_BETWEEN_TRACKS);
       };
 
-      // Handle missing audio file gracefully
+      // Error handler
       currentAudio.onerror = (e) => {
-        console.warn(`Could not load audio file: ${AUDIO_FILES[index]}. Ensure your GitHub paths are correct.`);
-        // Advance to next after short pause if file missing during testing
+        console.warn(`Could not play audio file: ${AUDIO_FILES[index]}. Ensure file exists on GitHub.`);
         pauseTimeout = setTimeout(() => {
           if (isPlaying) {
             startAudioPlayback(index + 1);
@@ -190,9 +225,9 @@
         }, PAUSE_BETWEEN_TRACKS);
       };
 
-      // Play current track
+      // Begin playback
       currentAudio.play().catch(err => {
-        console.log("Audio play deferred or blocked:", err);
+        console.log("Browser audio playback blocked/deferred:", err);
       });
     }
 
@@ -217,38 +252,39 @@
       clearHighlights();
       const el = document.getElementById(`track-p-${index}`);
       if (el) {
-        el.classList.add('active-track');
+        el.classList.add('playing-active');
       }
     }
 
     function clearHighlights() {
       for (let i = 0; i < AUDIO_FILES.length; i++) {
         const el = document.getElementById(`track-p-${i}`);
-        if (el) el.classList.remove('active-track');
+        if (el) el.classList.remove('playing-active');
       }
     }
 
     function updateUIPlayingState() {
-      toggleBtn.classList.add('playing-pulse');
+      toggleBtn.classList.add('is-playing');
       speakerIcon.classList.add('hidden');
       stopIcon.classList.remove('hidden');
     }
 
     function resetUI() {
-      toggleBtn.classList.remove('playing-pulse');
+      toggleBtn.classList.remove('is-playing');
       speakerIcon.classList.remove('hidden');
       stopIcon.classList.add('hidden');
     }
 
-    function notifyParentHeight() {
+    // Dynamic iframe height communication to prevent scrollbars in Mindsmith
+    function sendHeightToMindsmith() {
       if (window.parent && window.parent !== window) {
-        const height = document.body.scrollHeight;
+        const height = document.documentElement.scrollHeight || document.body.scrollHeight;
         window.parent.postMessage({ frameHeight: height }, '*');
       }
     }
 
-    window.addEventListener('load', notifyParentHeight);
-    window.addEventListener('resize', notifyParentHeight);
+    window.addEventListener('load', sendHeightToMindsmith);
+    window.addEventListener('resize', sendHeightToMindsmith);
   </script>
 </body>
 </html>
