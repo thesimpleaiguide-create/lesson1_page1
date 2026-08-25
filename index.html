@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson Introduction - Mindsmith Embed</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      /* Prevents scrollbars in Mindsmith embeds */
+      overflow: hidden; 
+      background-color: #ffffff;
+      font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #54595e;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Container layout with dynamic auto-fit padding */
+    .embed-container {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      padding: 24px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      overflow-y: auto; /* Fallback overflow handled smoothly */
+      /* Hide scrollbar for Chrome, Safari and Opera */
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+    .embed-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    .text-block {
+      transition: all 0.3s ease;
+      border-left: 3px solid transparent;
+      padding-left: 12px;
+      margin-left: -15px;
+      border-radius: 4px;
+    }
+
+    .text-block.active-track {
+      border-left-color: #0284c7;
+      background-color: #f0f9ff;
+    }
+
+    /* Speaker Button Pulse Effect */
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.4); }
+      70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(2, 132, 199, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(2, 132, 199, 0); }
+    }
+
+    .playing-pulse {
+      animation: pulse-ring 2s infinite;
+      background-color: #0284c7 !important;
+      color: #ffffff !important;
+    }
+  </style>
+</head>
+<body class="bg-white text-[#4a5568]">
+
+  <div class="embed-container max-w-4xl mx-auto flex flex-col justify-between">
+    
+    <div class="space-y-4 text-[15px] sm:text-[16px] leading-[1.7] text-[#4a5056] font-normal">
+      
+      <!-- Paragraph 1 (Track 1) -->
+      <p id="track-p-0" class="text-block">
+        <button 
+          id="audio-toggle-btn" 
+          onclick="toggleAudioPlayback()"
+          class="inline-flex items-center justify-center p-2 mr-2 -translate-y-[1px] align-middle rounded-full bg-sky-50 hover:bg-sky-100 text-sky-700 transition-all shadow-sm focus:outline-none border border-sky-200"
+          title="Click to Listen / Stop Audio"
+        >
+          <!-- Speaker Icon (Default Stopped) -->
+          <svg id="speaker-icon" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+          </svg>
+
+          <!-- Stop Icon (Hidden when playing) -->
+          <svg id="stop-icon" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <rect x="6" y="6" width="12" height="12" rx="1" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>Conflict with patients is one of the most draining parts of working in healthcare and one of the least talked about. This lesson will give you practical tools to handle those moments with confidence, without you paying an emotional cost.
+      </p>
+
+      <!-- Paragraph 2 (Track 2) -->
+      <p id="track-p-1" class="text-block">
+        We will start with the <strong class="font-semibold text-gray-900">why</strong> behind difficult behaviour because understanding what is driving it changes everything. Then we will move to the <strong class="font-semibold text-gray-900">how</strong>, that is, what you can <strong class="font-semibold text-gray-900">actually do</strong> in the moment.
+      </p>
+
+      <!-- Paragraph 3 & List (Track 3) -->
+      <div id="track-p-2" class="text-block space-y-3">
+        <p>By the end of this lesson, you will be able to:</p>
+
+        <ul class="list-disc pl-6 space-y-2 marker:text-gray-700">
+          <li>
+            Recognise the <strong class="font-semibold text-gray-900">hidden drivers</strong> behind challenging behaviour so that you can respond rather than react
+          </li>
+          <li>
+            Use empathy-first communication to <strong class="font-semibold text-gray-900">de-escalate</strong> tense situations without losing your authority
+          </li>
+          <li>
+            Apply the <strong class="font-semibold text-gray-900"><em>'what is in my control'</em> model</strong> to focus your energy on what you <strong class="font-semibold text-gray-900">can</strong> influence which will reduce stress and achieve better outcomes for you and the patient.
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    /**
+     * AUDIO CONFIGURATION (.wav files)
+     * Replace these filenames with your exact GitHub-hosted .wav file names.
+     */
+    const AUDIO_FILES = [
+      '1_conflict-with-patients-is-one-.wav',
+      '2_we-ll-start-with-the-why-behin.wav',
+      '3_-by-the-end-of-this-lesson----.wav'
+    ];
+
+    // Pause between tracks in milliseconds (1200 = 1.2 seconds)
+    const PAUSE_BETWEEN_TRACKS = 1200; 
+
+    let currentAudio = null;
+    let currentTrackIndex = 0;
+    let isPlaying = false;
+    let pauseTimeout = null;
+
+    const toggleBtn = document.getElementById('audio-toggle-btn');
+    const speakerIcon = document.getElementById('speaker-icon');
+    const stopIcon = document.getElementById('stop-icon');
+
+    function toggleAudioPlayback() {
+      if (isPlaying) {
+        stopAudioPlayback();
+      } else {
+        startAudioPlayback(0);
+      }
+    }
+
+    function startAudioPlayback(index) {
+      // Clear existing tracks and timeouts
+      stopAudioPlayback(false);
+
+      if (index >= AUDIO_FILES.length) {
+        // All tracks completed
+        resetUI();
+        return;
+      }
+
+      currentTrackIndex = index;
+      isPlaying = true;
+      updateUIPlayingState();
+      highlightActiveText(index);
+
+      // Create and configure HTML5 Audio object
+      currentAudio = new Audio(AUDIO_FILES[index]);
+
+      // When track finishes playing
+      currentAudio.onended = () => {
+        clearHighlights();
+        // Slight pause before next track
+        pauseTimeout = setTimeout(() => {
+          if (isPlaying) {
+            startAudioPlayback(index + 1);
+          }
+        }, PAUSE_BETWEEN_TRACKS);
+      };
+
+      // Handle missing audio file gracefully
+      currentAudio.onerror = (e) => {
+        console.warn(`Could not load audio file: ${AUDIO_FILES[index]}. Ensure your GitHub paths are correct.`);
+        // Advance to next after short pause if file missing during testing
+        pauseTimeout = setTimeout(() => {
+          if (isPlaying) {
+            startAudioPlayback(index + 1);
+          }
+        }, PAUSE_BETWEEN_TRACKS);
+      };
+
+      // Play current track
+      currentAudio.play().catch(err => {
+        console.log("Audio play deferred or blocked:", err);
+      });
+    }
+
+    function stopAudioPlayback(shouldResetUI = true) {
+      isPlaying = false;
+      if (pauseTimeout) {
+        clearTimeout(pauseTimeout);
+        pauseTimeout = null;
+      }
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        currentAudio = null;
+      }
+      clearHighlights();
+      if (shouldResetUI) {
+        resetUI();
+      }
+    }
+
+    function highlightActiveText(index) {
+      clearHighlights();
+      const el = document.getElementById(`track-p-${index}`);
+      if (el) {
+        el.classList.add('active-track');
+      }
+    }
+
+    function clearHighlights() {
+      for (let i = 0; i < AUDIO_FILES.length; i++) {
+        const el = document.getElementById(`track-p-${i}`);
+        if (el) el.classList.remove('active-track');
+      }
+    }
+
+    function updateUIPlayingState() {
+      toggleBtn.classList.add('playing-pulse');
+      speakerIcon.classList.add('hidden');
+      stopIcon.classList.remove('hidden');
+    }
+
+    function resetUI() {
+      toggleBtn.classList.remove('playing-pulse');
+      speakerIcon.classList.remove('hidden');
+      stopIcon.classList.add('hidden');
+    }
+
+    function notifyParentHeight() {
+      if (window.parent && window.parent !== window) {
+        const height = document.body.scrollHeight;
+        window.parent.postMessage({ frameHeight: height }, '*');
+      }
+    }
+
+    window.addEventListener('load', notifyParentHeight);
+    window.addEventListener('resize', notifyParentHeight);
+  </script>
+</body>
+</html>
